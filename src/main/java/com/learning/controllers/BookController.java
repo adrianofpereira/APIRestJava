@@ -2,10 +2,7 @@ package com.learning.controllers;
 
 
 import com.learning.DTO.CountryDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +15,11 @@ public class BookController {
 
     private List<CountryDto> countries = new ArrayList<>();
     //CREATE - POST
+    @PostMapping
+    public CountryDto save(@RequestBody final CountryDto countryDto){
+        countries.add(countryDto);
+        return countryDto;
+    }
 
     //READ - GET
     @GetMapping
