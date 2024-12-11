@@ -31,6 +31,17 @@ public class BookController {
         return countries;
     }
 
+    //Read Sspecific
+    @GetMapping("/{id}")
+    public CountryDto findById(@PathVariable("id") final long id){
+        for (var country: countries){
+            if (country.getId() == id){
+                return country;
+            }
+        }
+        return null;
+    }
+
     //UPDATE - PUT / PATCH
 
     //DELETE - DELETE
