@@ -2,6 +2,7 @@ package com.learning.controllers;
 
 
 import com.learning.DTO.CountryDto;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -33,13 +34,13 @@ public class BookController {
 
     //Read Sspecific
     @GetMapping("/{id}")
-    public CountryDto findById(@PathVariable("id") final long id){
+    public ResponseEntity<CountryDto> findById(@PathVariable("id") final long id){
         for (var country: countries){
             if (country.getId() == id){
-                return country;
+                return ResponseEntity.ok(country);
             }
         }
-        return null;
+        return ResponseEntity.notFound().build();
     }
 
     //UPDATE - PUT / PATCH
