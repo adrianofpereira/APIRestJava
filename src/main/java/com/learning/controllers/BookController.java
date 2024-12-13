@@ -1,12 +1,14 @@
 package com.learning.controllers;
 
-
-import com.learning.DTO.CountryDto;
+import com.learning.dto.CountryDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -14,25 +16,38 @@ import java.util.List;
 
 public class BookController {
 
-    private List<CountryDto> countries = new ArrayList<>();
+    private List<CountryDto> countries = insertCountries();
+
+    private List<CountryDto> insertCountries() {
+        var listOfCountries = new ArrayList<CountryDto>();
+        listOfCountries.add(new CountryDto(  1,  "Brasil",  215_000_000L));
+        listOfCountries.add(new CountryDto( 2,  "China",  1_400_000_000L));
+        listOfCountries.add(new CountryDto(  3,  "Alemanha",  83_000_000L));
+        listOfCountries.add(new CountryDto( 4,  "Argentina",  45_000_000L));
+        listOfCountries.add(new CountryDto(  5,  "Chile",  25_000_000L));
+        return listOfCountries;
+    }
+
     //CREATE - POST
     @PostMapping
-    public CountryDto save(@RequestBody final CountryDto countryDto){
+    public ResponseEntity<CountryDto> save(@RequestBody final CountryDto countryDto){
         countries.add(countryDto);
-        return countryDto;
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(countryDto);
     }
 
     //READ - GET
     @GetMapping
-    public List<CountryDto> getAll()
+    public  ResponseEntity<List<CountryDto>> getAll()
     {
         var country = new CountryDto(1, "Brasil", 215_000_000L);
         countries.clear();
         countries.add(country);
-        return countries;
+        return ResponseEntity.ok(countries);
     }
 
-    //Read Sspecific
+    //Read Specific
     @GetMapping("/{id}")
     public ResponseEntity<CountryDto> findById(@PathVariable("id") final long id){
         for (var country: countries){
@@ -42,6 +57,8 @@ public class BookController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    //filtering
 
     //UPDATE - PUT / PATCH
 

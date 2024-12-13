@@ -1,4 +1,4 @@
-package com.learning.DTO;
+package com.learning.dto;
 
     public class CountryDto {
     private Integer id;
