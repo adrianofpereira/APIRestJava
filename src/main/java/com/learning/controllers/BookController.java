@@ -39,11 +39,7 @@ public class BookController {
 
     //READ - GET
     @GetMapping
-    public  ResponseEntity<List<CountryDto>> getAll()
-    {
-        var country = new CountryDto(1, "Brasil", 215_000_000L);
-        countries.clear();
-        countries.add(country);
+    public ResponseEntity<List<CountryDto>> getAll() {
         return ResponseEntity.ok(countries);
     }
 
@@ -59,11 +55,61 @@ public class BookController {
     }
 
     //filtering
+    //@GetMapping
+    public ResponseEntity<List<CountryDto>> getAll(
+            @RequestParam(name = "prefix", required = false) final String prefix) {
 
+        if (Objects.isNull(prefix)) {
+            return ResponseEntity.ok(countries);
+        } else {
+
+            var listOfCountries =
+                            countries.stream()
+                            .filter(countryDto -> countryDto.getName().startsWith(prefix))
+                            .collect(Collectors.toList());
+            return ResponseEntity.ok(listOfCountries);
+        }
+    }
     //UPDATE - PUT / PATCH
+    @PutMapping("/{id}")
+    public ResponseEntity<CountryDto> update(@PathVariable("id") final int id,
+                                             @RequestBody final CountryDto request) {
 
+        //find
+        CountryDto countryDto = null;
+        for (var country : countries) {
+            if (country.getId() == id) {
+                countryDto = country;
+            }
+        }
+        //update
+        if (Objects.nonNull(countryDto)) {
+            countryDto.setId(request.getId());
+            countryDto.setName(request.getName());
+            countryDto.setPopulation(request.getPopulation());
+            return ResponseEntity.ok(countryDto);
+        }
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+    }
     //DELETE - DELETE
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") final int id) {
 
+        //find
+        int index = -1;
+        for (int i = 0; i <countries.size(); i++) {
+            if (countries.get(1).getId() == id) {
+                index = i;
+                break;
+            }
+        }
+
+        //remove
+        if(index >= 0) {
+            countries.remove(index);
+        }
+        return ResponseEntity.noContent().build();
+    }
 
 
     @GetMapping("/hello")
