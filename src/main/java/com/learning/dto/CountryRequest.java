@@ -1,26 +1,16 @@
 package com.learning.dto;
 
-    public class CountryDto {
-    private Integer id;
+public class CountryRequest {
     private String name;
     private Long population;
 
-    public CountryDto() {
+    public CountryRequest() {
 
     }
 
-    public CountryDto(Integer id, String name, Long population) {
-        this.id = id;
+    public CountryRequest(String name, Long population) {
         this.name = name;
         this.population = population;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -39,11 +29,9 @@ package com.learning.dto;
         this.population = population;
     }
 
-
     @Override
     public String toString() {
-        return "CountryDto{" +
-                "id=" + id +
+        return "CountryResponse{" +
                 ", name='" + name + '\'' +
                 ", population=" + population +
                 '}';
